@@ -1,0 +1,16 @@
+$GitIgnoreContent = @'
+# Entornos virtuales y cachés de Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Ignorar datos locales y logs para no saturar GitHub
+data/truck_metrics.parquet
+data/pipeline_execution.log
+
+# Configuración del editor
+.vscode/
+.idea/
+'@
+Set-Content -Path .\.gitignore -Value $GitIgnoreContent
