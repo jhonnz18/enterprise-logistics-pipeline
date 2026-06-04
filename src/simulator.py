@@ -1,4 +1,4 @@
-    import time
+import time
 import requests
 import polyline
 import random
@@ -26,7 +26,7 @@ def obtener_geometria_ruta(origen, destino):
         print(f"⚠️ No se pudo obtener ruta de OSRM. Status code: {response.status_code}")
         return []
     except requests.exceptions.RequestException as e:
-        print(f"❌ Error de red al conectar con OSRM: {e}")
+        print(f" Error de red al conectar con OSRM: {e}")
         return []
 
 def transmitir_telemetria(truck_id, lat, lon, stop_number, status):
@@ -35,7 +35,7 @@ def transmitir_telemetria(truck_id, lat, lon, stop_number, status):
     Sustituye este print por la función que escribe en tu Google Sheets o Parquet.
     """
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"📡 [{timestamp}] {truck_id} | Estado: {status} | Parada Actual: {stop_number}/4 | GPS: ({lat:.5f}, {lon:.5f})")
+    print(f" [{timestamp}] {truck_id} | Estado: {status} | Parada Actual: {stop_number}/4 | GPS: ({lat:.5f}, {lon:.5f})")
     
     # Ejemplo de payload listo para enviar a tu Google Sheets API existente:
     # payload = {"timestamp": timestamp, "truck_id": truck_id, "status": status, "lat": lat, "lon": lon, "stops": stop_number}
@@ -45,7 +45,7 @@ def ejecutar_itinerario_camion(truck_id, paradas_bogota):
     """
     Simula el ciclo completo del camión recorriendo secuencialmente sus 4 paradas asignadas.
     """
-    print(f"\n🚚 [DESPACHO ASIGNADO] Iniciando operaciones para el {truck_id}...")
+    print(f"\n [DESPACHO ASIGNADO] Iniciando operaciones para el {truck_id}...")
     paradas_completadas = 0
     
     # Recorremos los puntos definidos en el itinerario
@@ -64,19 +64,19 @@ def ejecutar_itinerario_camion(truck_id, paradas_bogota):
         for punto in camino_calles:
             lat, lon = punto
             transmitir_telemetria(truck_id, lat, lon, paradas_completadas, "IN_TRANSIT")
-            time.sleep(1) # Frecuencia de envío del sensor (1 segundo para testing rápido)
+            time.sleep(0.1) # Frecuencia de envío del sensor (1 segundo para testing rápido)
             
         # 3. El camión entra al radio geográfico del destino (Estado: ARRIVED)
         paradas_completadas += 1
         lat_final, lon_final = destino
         transmitir_telemetria(truck_id, lat_final, lon_final, paradas_completadas, "ARRIVED")
         
-        print(f"📦 [HITO] {truck_id} llegó con éxito a la parada #{paradas_completadas}. Descargando mercancía...")
-        time.sleep(3) # Simula el tiempo muerto de descarga en la bahía
+        print(f" [HITO] {truck_id} llegó con éxito a la parada #{paradas_completadas}. Descargando mercancía...")
+        time.sleep(1) # Simula el tiempo muerto de descarga en la bahía
         
     # 4. Al completar el itinerario completo de 4 paradas (Estado: COMPLETED)
     transmitir_telemetria(truck_id, lat_final, lon_final, paradas_completadas, "COMPLETED")
-    print(f"🏁 [OPERACIÓN FINALIZADA] {truck_id} completó su itinerario de {paradas_completadas} paradas.")
+    print(f" [OPERACIÓN FINALIZADA] {truck_id} completó su itinerario de {paradas_completadas} paradas.")
 
 # === ESCENARIO DE PRUEBA OPERATIVA (BOGOTÁ) ===
 if __name__ == "__main__":
