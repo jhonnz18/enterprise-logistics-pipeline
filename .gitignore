@@ -1,16 +1,16 @@
-$GitIgnoreContent = @'
-# Entornos virtuales y cachés de Python
-__pycache__/
-*.pyc
+# Created by venv; see https://docs.python.org/3/library/venv.html
+
+# Entornos Virtuales (Ignorar librerías pesadas)
 .venv/
+venv/
+env/
+ENV/
+
+# Archivos de caché de Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración local y credenciales (Seguridad)
 .env
-
-# Ignorar datos locales y logs para no saturar GitHub
-data/truck_metrics.parquet
-data/pipeline_execution.log
-
-# Configuración del editor
-.vscode/
-.idea/
-'@
-Set-Content -Path .\.gitignore -Value $GitIgnoreContent
